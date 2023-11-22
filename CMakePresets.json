@@ -1,0 +1,25 @@
+{
+    "version": 2,
+    "cmakeMinimumRequired": 
+    {
+        "major": 3,
+        "minor": 20,
+        "patch": 0
+    },
+    "configurePresets": 
+    [
+        {
+            "name": "zynq_embedded_linux",
+            "displayName": "Zynq embedded linux build",
+            "description": "Build for an zynq embedded linux device",
+            "binaryDir": "${sourceDir}/build/zynq",
+            "generator": "Unix Makefiles",
+            "cacheVariables": {
+                "CMAKE_BUILD_TYPE": "Release",
+                "ENABLE_SPDLOG": "ON",
+                "DRIVER_DMA_PROXY": "ON",
+                "SDL_PATH": "../SDL"
+            }
+        }
+    ]
+}

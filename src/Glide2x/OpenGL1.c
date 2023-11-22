@@ -23,6 +23,7 @@
 */
 
 #include "../Glide2x.h"
+#include "rrx.h"
 
 #include <SDL2/SDL_stdinc.h>
 #include <SDL2/SDL_opengl.h>
@@ -240,7 +241,7 @@ REALIGN STDCALL void grBufferSwap(int swap_interval)
 		glScissor(scissorBox[0], scissorBox[1], scissorBox[2], scissorBox[3]);
 	}
 
-	SDL_GL_SwapWindow(sdlWin);
+	rrx_swapFramebuffer();
 }
 REALIGN STDCALL void grColorCombine(GrCombineFunction_t function, GrCombineFactor_t factor, GrCombineLocal_t local, GrCombineOther_t other, BOOL invert)
 {
@@ -459,10 +460,7 @@ REALIGN STDCALL void grSstWinClose(void)
 REALIGN STDCALL BOOL grSstWinOpen(uint32_t hWnd, GrScreenResolution_t screen_resolution, GrScreenRefresh_t refresh_rate, GrColorFormat_t color_format, GrOriginLocation_t origin_location, int nColBuffers, int nAuxBuffers)
 {
 	glCtx = SDL_GL_CreateContext(sdlWin);
-	handleDpr();
-
-	if (vSync >= 0)
-		SDL_GL_SetSwapInterval(vSync);
+	rrx_init();
 
 	glEnable(GL_SCISSOR_TEST);
 	glEnable(GL_ALPHA_TEST);
@@ -484,18 +482,21 @@ REALIGN STDCALL BOOL grSstWinOpen(uint32_t hWnd, GrScreenResolution_t screen_res
 	maxTexIdx = 5;
 
 	if (useGlBleginGlEnd)
-		p_glFogCoordf = (PFNGLFOGCOORDFPROC)SDL_GL_GetProcAddress("glFogCoordfEXT");
+	{
+		// p_glFogCoordf = (PFNGLFOGCOORDFPROC)SDL_GL_GetProcAddress("glFogCoordfEXT");
+		p_glFogCoordf = NULL;
+	}
 	else
 	{
 		glEnableClientState(GL_COLOR_ARRAY);
 		glColorPointer(4, GL_FLOAT, 0, colorValues);
 
-		PFNGLFOGCOORDPOINTERPROC p_glFogCoordPointer = (PFNGLFOGCOORDPOINTERPROC)SDL_GL_GetProcAddress("glFogCoordPointerEXT");
-		if (p_glFogCoordPointer)
-		{
-			glEnableClientState(GL_FOG_COORD_ARRAY);
-			p_glFogCoordPointer(GL_FLOAT, 0, fogCoord);
-		}
+		// PFNGLFOGCOORDPOINTERPROC p_glFogCoordPointer = (PFNGLFOGCOORDPOINTERPROC)SDL_GL_GetProcAddress("glFogCoordPointerEXT");
+		// if (p_glFogCoordPointer)
+		// {
+		// 	glEnableClientState(GL_FOG_COORD_ARRAY);
+		// 	p_glFogCoordPointer(GL_FLOAT, 0, fogCoord);
+		// }
 
 		glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 		glTexCoordPointer(4, GL_FLOAT, 0, textureCoord);

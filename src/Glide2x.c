@@ -34,7 +34,7 @@ static void handleDpr()
 {
 	extern double dpr;
 	int w = winWidth, h = winHeight;
-	SDL_GL_GetDrawableSize(sdlWin, &w, &h);
+	rrx_GetDrawableSize(&w, &h);
 	dpr = ((double)w / (double)winWidth + (double)h / (double)winHeight) / 2.0;
 	winWidth  *= dpr;
 	winHeight *= dpr;

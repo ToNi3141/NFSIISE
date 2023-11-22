@@ -4,3 +4,6 @@
 [submodule "src/Cpp"]
 	path = src/Cpp
 	url = https://github.com/zaps166/NFSIISE-CPP
+[submodule "Rasterix"]
+	path = Rasterix
+	url = https://github.com/ToNi3141/Rasterix.git

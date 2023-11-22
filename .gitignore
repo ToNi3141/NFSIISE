@@ -18,3 +18,4 @@ src/Android/build.xml
 src/Android/local.properties
 src/Android/proguard-project.txt
 src/Android/project.properties
+build
