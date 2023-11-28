@@ -21,7 +21,8 @@ message("'SDL' found: " ${SDL})
 message("'SDL_INCL' found: " ${SDL_INCL}) 
 
 link_libraries(
-    ${SDL} 
+    ${SDL}
+    libGL.so.1 
 )
 include_directories(
     .
@@ -46,7 +47,6 @@ add_executable(nfs2se
     src/WinMM.c
     src/Wrapper.c
     src/Wsock32.c
-    src/Glide2x/rrx.cpp
 )
 
 target_compile_options(nfs2se 
@@ -59,15 +59,5 @@ target_compile_options(nfs2se
         -fno-exceptions
         -lm
 )
-target_link_libraries(nfs2se 
-    PRIVATE gl spdlog::spdlog dmaproxy
-)
 
-if (VARIANT_RRXIF)
-    add_compile_definitions(VARIANT_RRXIF=1)
-endif()
-if (VARIANT_RRXEF)
-    add_compile_definitions(VARIANT_RRXEF=1)
-endif()
-
-add_subdirectory(Rasterix)
+set(CMAKE_EXE_LINKER_FLAGS "${CMAKE_EXE_LINKER_FLAGS} -Wl,-rpath='$ORIGIN'")

@@ -16,8 +16,6 @@
             "generator": "Unix Makefiles",
             "cacheVariables": {
                 "CMAKE_BUILD_TYPE": "Release",
-                "ENABLE_SPDLOG": "ON",
-                "DRIVER_DMA_PROXY": "ON",
                 "SDL_PATH": "../SDL"
             }
         }

@@ -160,14 +160,33 @@ sudo apt install gcc-multilib
   * Unfortunately, only main 6 axes in DualShock 3 are accessible since Linux 4.12.
 
 # Zynq Build
+Preconditions:
+
+Clone SDL2 and Rasterix in the same directory in which you have cloned this repository.
+
+Before you can start building this repository, you have to build SDL2 to get the `libSDL2-2.0.so` and `libGL.so` from the Rasterix repository. 
+
+The `libGL.so` is build automatically when building the Rasterix repository.
+
+Build SDL2
+```sh
+git clone https://github.com/libsdl-org/SDL.git
+cd SDL
+checkout SDL2
+export SYSROOTS=/opt/petalinux/2022.2/sysroots
+cmake -S . -B build -DCMAKE_TOOLCHAIN_FILE=../Rasterix/toolchains/toolchain_zynq.cmake  -DSDL_SYSTEM_ICONV=false
+cmake --build build
+```
+
+If you have done this, copy `libSDL2-2.0.so` as `libSDL2-2.0.so.0` and `libGL.so` as `libGL.so.1` into the same directory in which you have copied the `nfs2se` binary. This build will always check local directories first before it searches at other directories for the shared libraries.
+
+To cross compile, use the following steps:
+
 ```sh
 git clone https://github.com/ToNi3141/NFSIISE.git
 cd NFSIISE
-git submodule update --init --recursive
 export SYSROOTS=/opt/petalinux/2022.2/sysroots
-cmake --preset zynq_embedded_linux -DCMAKE_TOOLCHAIN_FILE=Rasterix/toolchains/toolchain_zynq.cmake -DVARIANT_RRXIF=ON
+cmake --preset zynq_embedded_linux -DCMAKE_TOOLCHAIN_FILE=../Rasterix/toolchains/toolchain_zynq.cmake
 cmake --build build/zynq/ --parallel
 ```
 Copy the NFSIISE data on your device (similar to the steps above). Copy the new binary `nfs2se` on your device and run it.
-
-For more details, see also https://github.com/ToNi3141/tuxracer
